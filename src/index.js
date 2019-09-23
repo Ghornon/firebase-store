@@ -1,9 +1,21 @@
-// const functions = require('firebase-functions');
 import * as functions from 'firebase-functions';
+import express from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
 
-// Create and Deploy Your First Cloud Functions
-// https://firebase.google.com/docs/functions/write-firebase-functions
+// Routers
+import authRouter from './routes/authRouter';
 
-exports.helloWorld = functions.https.onRequest((request, response) => {
-	response.send('Hello from Firebase!!!');
-});
+const app = express();
+
+// Middlewares
+app.use(cors({ origin: true }));
+app.use(bodyParser.json());
+
+// Routes
+app.use(authRouter);
+
+// API endpoint
+
+/* eslint import/prefer-default-export: */
+export const api = functions.region('europe-west1').https.onRequest(app);
