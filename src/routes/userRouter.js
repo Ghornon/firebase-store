@@ -1,7 +1,7 @@
 import Router from 'express-promise-router';
 import { isAuthenticated, accessGuard } from '../utils/accessGuard';
 import validateBody from '../utils/validateBody';
-import * as schemas from '../schemas/authSchemas';
+import * as schemas from '../schemas/userSchemas';
 import * as controllers from '../controllers/userController';
 
 const userRouter = Router();

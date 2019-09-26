@@ -2,8 +2,9 @@ import Joi from '@hapi/joi';
 
 const user = Joi.object({
 	displayName: Joi.string()
-		.alphanum()
-		.required(),
+		.required()
+		.max(50)
+		.regex(/^\s*\w+(?:[^\w,]+\w+)*[^,\w]*$/),
 	imageUrl: Joi.string()
 		.uri()
 		.required()

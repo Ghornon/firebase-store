@@ -12,11 +12,17 @@ const isAuthenticated = async (req, res, next) => {
 
 	const idToken = split[1];
 
-	const { uid, role = '' } = await admin
+	const { uid, role = 'User', code } = await admin
 		.auth()
 		.verifyIdToken(idToken)
-		.catch(error => {
-			console.error('Decoding token error: ', error);
+		.catch(({ errorInfo }) => {
+			console.error('Decoding token error: ', errorInfo);
+			return errorInfo;
+		});
+
+	if (code === 'auth/id-token-expired')
+		return res.status(401).json({
+			error: 'ID token has expired. Get a fresh ID token from your client app and try again'
 		});
 
 	if (!uid) return res.status(401).json({ error: 'Unauthorized' });
