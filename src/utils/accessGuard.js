@@ -32,9 +32,9 @@ const isAuthenticated = async (req, res, next) => {
 
 const accessGuard = ({ hasRole, allowSameUser }) => (req, res, next) => {
 	const { role, uid } = res.locals;
-	const { id } = req.params;
+	const { userId } = req.params;
 
-	if (allowSameUser && id && uid === id) return next();
+	if (allowSameUser && userId && uid === userId) return next();
 
 	if (!role || !hasRole.includes(role))
 		res.status(403).json({ error: 'The client does not have access rights to the content.' });

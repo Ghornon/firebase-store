@@ -1,11 +1,10 @@
 import fetch from 'node-fetch';
-import { admin, db } from '../utils/admin';
 import config from '../utils/config';
 
 const signIn = async (req, res) => {
 	const { email, password } = req.body;
 
-	const { localId, displayName, error } = await fetch(
+	const { idToken, localId, displayName, error } = await fetch(
 		`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${config.apiKey}`,
 		{
 			method: 'post',
@@ -42,35 +41,11 @@ const signIn = async (req, res) => {
 		}
 	}
 
-	const role = await db
-		.collection('users')
-		.where('userId', '==', localId)
-		.limit(1)
-		.get()
-		.then(querySnapshot => {
-			if (!querySnapshot.empty) {
-				return querySnapshot.docs[0].data().role;
-			}
-			return null;
-		})
-		.catch(err => {
-			console.error('Error getting document:', err);
-		});
-
-	const customToken = await admin
-		.auth()
-		.createCustomToken(localId, { role })
-		.catch(err => {
-			console.error('Error creating custom token:', err);
-		});
-
-	if (!customToken) return res.status(500);
-
 	return res.status(200).json({
 		userId: localId,
 		email,
 		displayName,
-		idToken: customToken
+		idToken
 	});
 };
 
