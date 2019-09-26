@@ -3,10 +3,10 @@
 	"description": "Cloud Functions for Firebase store project",
 	"scripts": {
 		"start": "npm run watch & npm run shell",
-		"serve": "npm run watch & firebase serve --only functions",
+		"serve": "concurrently \"npm run watch\" \"firebase serve --only functions\"",
 		"shell": "firebase functions:shell",
-		"watch": "npm run compile --watch",
-		"compile": "babel src --out-dir dist --source-maps",
+		"watch": "babel src --out-dir dist --source-maps --extensions .js --verbose --watch",
+		"compile": "babel src --out-dir dist --source-maps --extensions .js --verbose",
 		"deploy": "firebase deploy --only functions",
 		"predeploy": "npm run compile",
 		"logs": "firebase functions:log"
@@ -30,6 +30,7 @@
 		"@babel/core": "^7.6.0",
 		"@babel/preset-env": "^7.6.0",
 		"@babel/preset-flow": "^7.0.0",
+		"concurrently": "^4.1.2",
 		"eslint": "^5.12.0",
 		"eslint-config-airbnb-base": "^14.0.0",
 		"eslint-config-prettier": "^6.3.0",
