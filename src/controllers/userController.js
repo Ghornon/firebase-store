@@ -58,7 +58,8 @@ const update = async (req, res) => {
 		.doc(docId)
 		.update({
 			displayName,
-			imageUrl
+			imageUrl,
+			updatedAt: new Date().toISOString()
 		});
 
 	if (!user) return res.status(404).json({ error: 'User not found!' });

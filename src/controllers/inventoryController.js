@@ -71,6 +71,7 @@ const create = async (req, res) => {
 	const newInventory = await db
 		.collection('inventory')
 		.add({
+			createdAt: new Date().toISOString(),
 			name,
 			description,
 			price,
@@ -120,7 +121,8 @@ const update = async (req, res) => {
 			description,
 			price,
 			visibility,
-			imageUrl
+			imageUrl,
+			updatedAt: new Date().toISOString()
 		});
 
 	if (!updateResult) return res.status(500).json({ error: 'Error updating document!' });
