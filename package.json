@@ -3,7 +3,7 @@
 	"description": "Cloud Functions for Firebase store project",
 	"scripts": {
 		"start": "npm run watch & npm run shell",
-		"serve": "concurrently \"npm run watch\" \"firebase serve --only functions\"",
+		"serve": "concurrently \"npm run watch\" \"firebase serve\"",
 		"shell": "firebase functions:shell",
 		"watch": "babel src --out-dir dist --source-maps --extensions .js --verbose --watch",
 		"compile": "babel src --out-dir dist --source-maps --extensions .js --verbose",

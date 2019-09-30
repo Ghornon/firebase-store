@@ -4,8 +4,12 @@ const getAll = async (req, res) => {
 	const users = await db
 		.collection('users')
 		.get()
-		.then(snapshot => (!snapshot.empty ? [...snapshot.docs].map(doc => doc.data()) : null))
-		.catch(err => console.error(err));
+		.then(snapshot => {
+			if (!snapshot.empty) {
+				return [...snapshot.docs].map(doc => doc.data());
+			}
+			return null;
+		});
 
 	if (!users) return res.status(404).json({ error: 'Not found!' });
 
@@ -19,7 +23,12 @@ const get = async (req, res) => {
 		.collection('users')
 		.where('userId', '==', userId)
 		.get()
-		.then(snapshot => (!snapshot.empty ? snapshot.docs[0].data() : null));
+		.then(snapshot => {
+			if (!snapshot.empty) {
+				return snapshot.docs[0].data();
+			}
+			return null;
+		});
 
 	if (!user) return res.status(404).json({ error: 'User not found!' });
 
@@ -33,8 +42,14 @@ const update = async (req, res) => {
 	const docId = await db
 		.collection('users')
 		.where('userId', '==', userId)
+		.limit(1)
 		.get()
-		.then(snapshot => (!snapshot.empty ? snapshot.docs[0].data() : null));
+		.then(snapshot => {
+			if (!snapshot.empty) {
+				return snapshot.docs[0].id;
+			}
+			return null;
+		});
 
 	if (!docId) return res.status(404).json({ error: 'User not found!' });
 
@@ -48,7 +63,7 @@ const update = async (req, res) => {
 
 	if (!user) return res.status(404).json({ error: 'User not found!' });
 
-	return res.status(200).json({ ...user });
+	return res.status(204).json();
 };
 
 const remove = async (req, res) => {
@@ -57,8 +72,14 @@ const remove = async (req, res) => {
 	const docId = await db
 		.collection('users')
 		.where('userId', '==', userId)
+		.limit(1)
 		.get()
-		.then(snapshot => (!snapshot.empty ? snapshot.docs[0].data() : null));
+		.then(snapshot => {
+			if (!snapshot.empty) {
+				return snapshot.docs[0].id;
+			}
+			return null;
+		});
 
 	if (!docId) return res.status(404).json({ error: 'User not found!' });
 

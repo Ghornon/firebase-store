@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 app.use(authRouter);
 app.use(userRouter);
 
-// API endpoint
-
-/* eslint import/prefer-default-export: */
 export const api = functions.region('europe-west1').https.onRequest(app);
+
+// Triggers
+export { onCreate as onUserCreate, onDelete as onUserDelete } from './triggers/authTrigger';
