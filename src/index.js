@@ -7,6 +7,7 @@ import bodyParser from 'body-parser';
 import authRouter from './routes/authRouter';
 import userRouter from './routes/userRouter';
 import inventoryRouter from './routes/inventoryRouter';
+import orderRouter from './routes/orderRouter';
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(bodyParser.json());
 app.use(authRouter);
 app.use(userRouter);
 app.use(inventoryRouter);
+app.use(orderRouter);
 
 export const api = functions.region('europe-west1').https.onRequest(app);
 

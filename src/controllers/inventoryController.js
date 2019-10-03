@@ -3,6 +3,7 @@ import { db } from '../utils/admin';
 const getAll = async (req, res) => {
 	const inventory = await db
 		.collection('inventory')
+		.orderBy('createdAt', 'desc')
 		.get()
 		.then(snapshot => {
 			if (!snapshot.empty) {
@@ -25,6 +26,7 @@ const get = async (req, res) => {
 	const inventory = await db
 		.collection('inventory')
 		.where('visibility', '==', 'Public')
+		.orderBy('createdAt', 'desc')
 		.get()
 		.then(snapshot => {
 			if (!snapshot.empty) {
@@ -94,7 +96,7 @@ const create = async (req, res) => {
 			return null;
 		});
 
-	if (!inventory) return res.status(500).json({ error: 'Error creating document!' });
+	if (!inventory) return res.status(500).json({ error: 'Unexpected error' });
 
 	return res.status(201).json({
 		...inventory
@@ -125,7 +127,7 @@ const update = async (req, res) => {
 			updatedAt: new Date().toISOString()
 		});
 
-	if (!updateResult) return res.status(500).json({ error: 'Error updating document!' });
+	if (!updateResult) return res.status(500).json({ error: 'Unexpected error' });
 
 	return res.status(204).json();
 };
